@@ -1,0 +1,161 @@
+CREATE TABLE Estudante(
+	id int unsigned CHECK(id between 0 and 99999999) PRIMARY KEY,
+    nome varchar(100) NOT NULL,
+    sexo char(1) NOT NULL,
+    morada varchar(150) NOT NULL,
+    nomePai varchar(100) NOT NULL,
+    nomeMae varchar(100) NOT NULL,
+    nacionalidade varchar(50) NOT NULL,
+    naturalidade varchar(50) NOT NULL,
+    emailPessoal varchar(40) NOT NULL,
+    emailInstitucional varchar(40) NOT NULL,
+    telefone varchar(20) NOT NULL,
+    dataNascimento date NOT NULL,
+    idCurso TINYINT UNSIGNED,
+    CONSTRAINT fk_idCurso FOREIGN KEY(idCurso) REFERENCES curso(id) ON DELETE NO ACTION
+);
+
+alter table estudante
+add anoIngresso varchar(10) Not null;
+
+alter table estudante
+add senha varchar(12) Not null;
+
+alter table disciplina
+add anoCurricular int CHECK(anoCurricular between 0 and 5) not null;
+
+create table disciplina(
+	id tinyint unsigned  auto_increment,
+	nome varchar(200) NOT NULL,
+    sigla varchar(10) NOT NULL,
+	semestre char(1) NOT NULL,
+    idCurso tinyint unsigned NOT NULL,
+    PRIMARY KEY(id),
+	CONSTRAINT fk_idCurso_3 FOREIGN KEY(idCurso) REFERENCES curso(id) ON DELETE NO ACTION
+)auto_increment = 1;
+
+/*
+create table curso_disciplina(
+	idCurso tinyint unsigned,
+    idDisciplina tinyint unsigned,
+    CONSTRAINT idCursoDisciplina PRIMARY KEY(idCurso, idDisciplina),
+    CONSTRAINT fk_idCurso_1 FOREIGN KEY(idCurso) REFERENCES curso(id) ON DELETE NO ACTION,
+    CONSTRAINT fk_idDisciplina_1 FOREIGN KEY(idDisciplina) REFERENCES disciplina(id) ON DELETE NO ACTION
+);
+*/
+/*
+drop table disciplina;
+drop table estudante_disciplina;
+drop table curso_disciplina;
+drop table notas;
+drop table estudante;
+*/
+
+create table estudante_disciplina(
+	idEstudante int unsigned,
+    idDisciplina tinyint unsigned,
+    inscricao int unsigned auto_increment primary key,
+    CONSTRAINT fk_idEstudante_2 FOREIGN KEY(idEstudante) REFERENCES Estudante(id) ON DELETE NO ACTION,
+    CONSTRAINT fk_idDisciplina_2 FOREIGN KEY(idDisciplina) REFERENCES disciplina(id) ON DELETE NO ACTION
+) auto_increment = 1;
+
+create table notas(
+	idNotas int unsigned primary key,
+	t1 tinyint NOT NULL CHECK(t1 between 0 and 20),
+    t2 tinyint NOT NULL CHECK(t2 between 0 and 20),
+	foreign key (idNotas) REFERENCES estudante_disciplina(inscricao)
+);
+
+alter table notas
+modify t1 decimal(4,2) ;
+
+update estudante
+set senha = 31031997
+where id = 20201122;
+
+update disciplina
+set anoCurricular = 2
+where id in(7,8);
+
+
+INSERT INTO disciplina (nome,sigla,semestre,idCurso) VALUES
+	("Informatica", "INFO", '1', 1),
+    ("Fisica", "F", '1', 1),
+    ("Analise Matematica I ", "AMI", '1', 1),
+    ("Algebra Geometria Analitica", "ALGA", '1', 1),
+    ("Matematica Discreta", "MDI", '1', 1),
+    ("Introducao a Engenharia", "IE", '1', 1);
+    
+    
+INSERT INTO estudante(id,nome,sexo,morada,nomePai,nomeMae,nacionalidade,naturalidade,emailPessoal,emailInstitucional,telefone,dataNascimento,idCurso) VALUES (20202392,"Agostinho Massango",'M',"Luis Cabral","Estevao Agostingo Massango", "Cacilda Amelia Cuna", "Mocambicana","Cidade de Maputo", "massango541@gmail.com","agostinho.massango@uem.ac.mz","844516700", '2001-06-28',1);
+
+insert into estudante_disciplina(idEstudante,idDisciplina) values 
+	(20201122,1),
+    (20201122,2),
+    (20201122,4);
+   
+insert into notas(idNotas,t1,t2) values
+	(7,12,13),	
+	(8,12,19),
+    (9,4,6),
+    (10,20,5),
+    (11,15,16),
+    (12,16,18);
+    
+INSERT INTO estudante(id,nome,sexo,morada,nomePai,nomeMae,nacionalidade,naturalidade,emailPessoal,emailInstitucional,telefone,dataNascimento,idCurso) VALUES (20201122,"Alex Agostinho Massango",'M',"Luis Cabral","Estevao Agostingo Massango", "Cacilda Amelia Cuna", "Mocambicana","Cidade de Maputo", "massango541@gmail.com","agostinho.massango@uem.ac.mz","844516700", '1997-03-31',1);
+
+INSERT INTO disciplina (nome,sigla,semestre,idCurso) VALUES
+	("Matematica Discreta II", "MD2", '2', 1),
+    ("Introducao a Programacao", "IP", '2', 1);
+
+
+
+SELECT * FROM estudante WHERE id=20202392;
+
+SELECT * FROM estudante_disciplina;
+select * from disciplina;
+SELECT * FROM disciplina WHERE id IN (SELECT idDisciplina FROM estudante_disciplina where idEstudante=20202392);
+
+SELECT * FROM disciplina WHERE id IN (SELECT idDisciplina FROM estudante_disciplina where idEstudante=String.valueof(est.getId()));
+
+SELECT  idNotas, t1,t2 
+FROM estudante_disciplina E
+INNER JOIN notas N 
+ON N.idNotas = E.inscricao
+WHERE E.idDisciplina=1 
+AND idEstudante=20201122;
+ 
+ 
+SELECT idNotas, t1,t2, nome
+FROM estudante_disciplina E
+INNER JOIN  disciplina D
+INNER JOIN notas N
+ON N.idNotas = E.inscricao
+AND E.idDisciplina = D.id
+AND idEstudante=20202392;
+
+
+
+
+
+
+
+
+
+
+
+
+
+use academico;
+show tables;
+table notas;
+table curso;
+table estudante;
+table disciplina; 
+table estudante_disciplina;
+
+
+
+
+
+
